@@ -35,6 +35,13 @@ const DataTable = () => { //expressão lambda (atribuindo a variável NavBar a f
                     </tr>
                     <tr>
                         <td>01/11/2021</td>
+                        <td>Kelly Kapoor</td>
+                        <td>12</td>
+                        <td>8</td>
+                        <td>5000.00</td>
+                    </tr>
+                    <tr>
+                        <td>01/11/2021</td>
                         <td>Ryan Howard</td>
                         <td>0</td>
                         <td>0</td>
