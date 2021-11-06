@@ -1,4 +1,26 @@
-const DataTable = () => { //expressão lambda (atribuindo a variável NavBar a função sem nome)
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { SalePage } from "types/sale";
+import { formatLocalDate } from "utils/format";
+import { BASE_URL } from "utils/requests";
+
+const DataTable = () => {
+
+    const [page, setPage] = useState<SalePage>({
+        first: true,
+        last: true,
+        number: 0,
+        totalElements: 0,
+        totalPages: 0
+    });
+
+    useEffect(() => {
+        axios.get(BASE_URL + '/sales?page=&size=20&sort=date,desc')
+            .then(response => {
+                setPage(response.data);
+            });
+    }, []);
+
     return (
         <div className="table-responsive">
             <table className="table table-striped table-sm">
@@ -12,41 +34,15 @@ const DataTable = () => { //expressão lambda (atribuindo a variável NavBar a f
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>01/11/2021</td>
-                        <td>Jim Halpert</td>
-                        <td>34</td>
-                        <td>25</td>
-                        <td>15017.00</td>
-                    </tr>
-                    <tr>
-                        <td>01/11/2021</td>
-                        <td>Dwight Schrute</td>
-                        <td>33</td>
-                        <td>24</td>
-                        <td>14000.00</td>
-                    </tr>
-                    <tr>
-                        <td>01/11/2021</td>
-                        <td>Stanley Hudson</td>
-                        <td>25</td>
-                        <td>15</td>
-                        <td>10000.00</td>
-                    </tr>
-                    <tr>
-                        <td>01/11/2021</td>
-                        <td>Kelly Kapoor</td>
-                        <td>12</td>
-                        <td>8</td>
-                        <td>5000.00</td>
-                    </tr>
-                    <tr>
-                        <td>01/11/2021</td>
-                        <td>Ryan Howard</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0.00</td>
-                    </tr>
+                    {page.content?.map(item => (
+                        <tr key={item.id}>
+                            <td>{formatLocalDate(item.date, "dd/MM/yyyy")}</td>
+                            <td>{item.seller.name}</td>
+                            <td>{item.visited}</td>
+                            <td>{item.deals}</td>
+                            <td>{item.amount.toFixed(2)}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
